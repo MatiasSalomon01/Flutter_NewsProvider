@@ -86,16 +86,16 @@ class Source {
         required this.name,
     });
 
-    Id id;
-    Name name;
+    String id;
+    String name;
 
     factory Source.fromRawJson(String str) => Source.fromJson(json.decode(str));
 
     String toRawJson() => json.encode(toJson());
 
     factory Source.fromJson(Map<String, dynamic> json) => Source(
-        id: idValues.map[json["id"]]!,
-        name: nameValues.map[json["name"]]!,
+        id: json["id"],
+        name: json["name"],
     );
 
     Map<String, dynamic> toJson() => {
