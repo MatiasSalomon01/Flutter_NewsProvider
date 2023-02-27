@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/src/screens/screens.dart';
+import 'package:news_app/src/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 
@@ -27,7 +28,7 @@ class _Navegacion extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: navegacionModel.paginaActual,
       onTap: (value) => navegacionModel.paginaActual = value,
-      //selectedItemColor: Colors.red.withOpacity(0.7),
+      selectedItemColor: theme.primaryColor,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

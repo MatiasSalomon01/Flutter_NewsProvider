@@ -39,7 +39,7 @@ class Article {
         required this.title,
         this.description,
         required this.url,
-        this.urlToImage,
+        required this.urlToImage,
         required this.publishedAt,
         this.content,
     });

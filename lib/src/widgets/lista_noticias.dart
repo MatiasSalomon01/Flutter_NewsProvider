@@ -32,8 +32,52 @@ class _Noticia extends StatelessWidget {
         _TarjetaTopBar(noticia, index,),
         _TarjetaTitulo(noticia),
         _TarjetaImagen(noticia),
+        _TarjetaBody(noticia),
+        _TarjetaBotones(),
+        SizedBox(height: 10,),
+        Divider(thickness: 2,)
       ],
     );
+  }
+}
+
+class _TarjetaBotones extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RawMaterialButton(
+            onPressed: (){},
+            fillColor: theme.primaryColor,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Icon(Icons.star_border),
+          ),
+          SizedBox(width: 10,),
+          RawMaterialButton(
+            onPressed: (){},
+            fillColor: theme.primaryColor,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Icon(Icons.more),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _TarjetaBody extends StatelessWidget {
+  final Article noticia;
+  const _TarjetaBody(this.noticia);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Text((noticia.description != null)?noticia.description:''))
+    ;
   }
 }
 
@@ -44,7 +88,18 @@ class _TarjetaImagen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('Hola Mundo'),
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(25),
+        child: Container(
+          child: noticia.urlToImage != null 
+            ? FadeInImage(
+                placeholder: AssetImage('assets/giphy.gif'), 
+                image: NetworkImage(noticia.urlToImage)
+              )
+            : Image(image: AssetImage('assets/no-image.png')),
+        ),
+      ),
     );
   }
 }
