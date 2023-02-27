@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/src/services/services.dart';
 import 'package:provider/provider.dart';
 
 
@@ -22,6 +23,7 @@ class _Navegacion extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final navegacionModel = Provider.of<_NavegacionModel>(context);
+    final newsService = Provider.of<NewsService>(context);
 
     return BottomNavigationBar(
       currentIndex: navegacionModel.paginaActual,
