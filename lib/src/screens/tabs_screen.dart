@@ -17,9 +17,6 @@ class TabsScreen extends StatelessWidget {
 }
 
 class _Navegacion extends StatelessWidget {
-  const _Navegacion({
-    super.key,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +26,7 @@ class _Navegacion extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: navegacionModel.paginaActual,
       onTap: (value) => navegacionModel.paginaActual = value,
-      selectedItemColor: Colors.red.withOpacity(0.7),
+      //selectedItemColor: Colors.red.withOpacity(0.7),
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
@@ -45,14 +42,14 @@ class _Navegacion extends StatelessWidget {
 }
 
 class _Paginas extends StatelessWidget {
-  const _Paginas({
-    super.key,
-  });
 
   @override
   Widget build(BuildContext context) {
+
+    final navegacionModel = Provider.of<_NavegacionModel>(context);
+
     return PageView(
-      //physics: BouncingScrollPhysics(),
+      controller: navegacionModel.pageController,
       physics: NeverScrollableScrollPhysics(),
       children: [
         Container(
@@ -71,10 +68,15 @@ class _Paginas extends StatelessWidget {
 class _NavegacionModel extends ChangeNotifier{
   int _paginaActual = 0;
 
+  PageController _pageController = PageController();
+
   int get paginaActual =>  _paginaActual;
 
   set paginaActual(int valor){
     _paginaActual = valor;
+    _pageController.animateToPage(valor, duration: Duration(milliseconds: 250), curve: Curves.bounceIn);
     notifyListeners();
   }
+
+  PageController get pageController => _pageController;
 }
