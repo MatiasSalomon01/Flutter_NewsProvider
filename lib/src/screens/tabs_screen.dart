@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class TabsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _Paginas(),
-      bottomNavigationBar: _Navegacion(),
-   );
+    return ChangeNotifierProvider(
+      create: (context) => _NavegacionModel(),
+      child: Scaffold(
+        body: _Paginas(),
+        bottomNavigationBar: _Navegacion(),
+       ),
+    );
   }
 }
 
@@ -19,8 +23,13 @@ class _Navegacion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final navegacionModel = Provider.of<_NavegacionModel>(context);
+
     return BottomNavigationBar(
-      currentIndex: 0,
+      currentIndex: navegacionModel.paginaActual,
+      onTap: (value) => navegacionModel.paginaActual = value,
+      selectedItemColor: Colors.red.withOpacity(0.7),
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
@@ -56,5 +65,16 @@ class _Paginas extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class _NavegacionModel extends ChangeNotifier{
+  int _paginaActual = 0;
+
+  int get paginaActual =>  _paginaActual;
+
+  set paginaActual(int valor){
+    _paginaActual = valor;
+    notifyListeners();
   }
 }
