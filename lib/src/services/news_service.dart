@@ -10,6 +10,8 @@ class NewsService with ChangeNotifier{
 
   List<Article> headlines = [];
 
+  String _selectedCategory = 'business';
+
   List<Category> categories = [
     Category(FontAwesomeIcons.building, 'business'),
     Category(FontAwesomeIcons.tv, 'entertainment'),
@@ -20,8 +22,21 @@ class NewsService with ChangeNotifier{
     Category(FontAwesomeIcons.memory, 'technology')
   ];
 
+  Map<String, List<Article>> categoryArticles = {};
+
   NewsService(){
     getTopHeadLines();
+    categories.forEach((item) {
+      categoryArticles[item.name] = List.empty(growable: true);
+    });
+  }
+
+  String get selectedCategory => _selectedCategory;
+
+  set selectedCategory(String valor){
+    _selectedCategory = valor;
+    getArticlesByCategory(valor);
+    notifyListeners();
   }
 
   getTopHeadLines() async{
@@ -33,6 +48,21 @@ class NewsService with ChangeNotifier{
     final res = await http.get(url);
     final newsResponse = NewsResponse.fromRawJson(res.body);
     headlines.addAll(newsResponse.articles);
+    notifyListeners();
+  }
+
+  getArticlesByCategory(String category)async{
+
+    if(categoryArticles[category]!.length > 0){
+      return categoryArticles[category];
+    }
+
+    final url = Uri.parse('$_URL_NEWS/top-headlines?country=us&apiKey=$_APIKEY&category=$category');
+    final res = await http.get(url);
+    final newsResponse = NewsResponse.fromRawJson(res.body);
+
+    categoryArticles[category]?.addAll(newsResponse.articles);
+
     notifyListeners();
   }
 
