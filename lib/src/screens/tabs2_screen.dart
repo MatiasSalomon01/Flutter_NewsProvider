@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/src/models/models.dart';
 import 'package:news_app/src/services/services.dart';
 import 'package:news_app/src/theme/theme.dart';
+import 'package:news_app/src/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 
@@ -9,11 +10,17 @@ class Tab2Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final newService = Provider.of<NewsService>(context);
+
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
-            Expanded(child: _ListaCategorias()),
+            _ListaCategorias(),
+            Expanded(
+              child: ListaNoticias(newService.getArticulosCategoriaSeleccionada!)
+            )
           ],
         )
        ),
@@ -28,24 +35,28 @@ class _ListaCategorias extends StatelessWidget {
 
     final categories = Provider.of<NewsService>(context).categories;
 
-    return ListView.builder(
-      physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      itemCount: categories.length,
-      itemBuilder:(context, index) {
-        final name = categories[index].name;
-
-        return Padding(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            children: [
-              _CategoryButton(categories[index]),
-              SizedBox(height: 5,),
-              Text('${name[0].toUpperCase()}${name.substring(1)}',)
-            ]
-          ),
-        );
-      }, 
+    return Container(
+      width: double.infinity,
+      height: 80,
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder:(context, index) {
+          final name = categories[index].name;
+    
+          return Padding(
+            padding: EdgeInsets.all(8),
+            child: Column(
+              children: [
+                _CategoryButton(categories[index]),
+                SizedBox(height: 5,),
+                Text('${name[0].toUpperCase()}${name.substring(1)}',)
+              ]
+            ),
+          );
+        }, 
+      ),
     );
   }
 }
